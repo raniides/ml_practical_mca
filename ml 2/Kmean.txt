@@ -1,0 +1,82 @@
+pip install numpy pandas scikit-learn
+
+
+
+
+import pandas as pd
+import numpy as np
+from sklearn.cluster import KMeans
+import matplotlib.pyplot as plt
+
+# Load your dry bean dataset (replace 'path_to_dataset.csv' with the actual path)
+data = pd.read_csv('path_to_dataset.csv')
+
+# Assuming the relevant features for market analysis are in columns 'feature1', 'feature2', ...
+# Adjust these column names based on your dataset
+features = data[['feature1', 'feature2', 'feature3', ...]]
+
+# Choose the number of clusters (k)
+k = 3  # You may adjust this based on your analysis
+
+# Fit K-means model to the data
+kmeans = KMeans(n_clusters=k, random_state=42)
+data['cluster'] = kmeans.fit_predict(features)
+
+# Visualize the clusters (for 2D data, adjust as needed)
+plt.scatter(features['feature1'], features['feature2'], c=data['cluster'], cmap='viridis', marker='o', edgecolors='w')
+plt.scatter(kmeans.cluster_centers_[:, 0], kmeans.cluster_centers_[:, 1], c='red', marker='X', s=200, label='Centroids')
+plt.title('K-means Clustering')
+plt.xlabel('Feature 1')
+plt.ylabel('Feature 2')
+plt.legend()
+plt.show()
+
+
+
+
+
+
+
+pca
+
+import pandas as pd
+import numpy as np
+from sklearn.decomposition import PCA
+from sklearn.cluster import KMeans
+from sklearn.preprocessing import StandardScaler
+import matplotlib.pyplot as plt
+
+# Load your dry bean dataset (replace 'path_to_dataset.csv' with the actual path)
+data = pd.read_csv('path_to_dataset.csv')
+
+# Assuming the relevant features for market analysis are in columns 'feature1', 'feature2', ...
+# Adjust these column names based on your dataset
+features = data[['feature1', 'feature2', 'feature3', ...]]
+
+# Standardize the features
+scaler = StandardScaler()
+scaled_features = scaler.fit_transform(features)
+
+# Perform PCA for dimensionality reduction
+pca = PCA(n_components=2)  # You can adjust the number of components as needed
+principal_components = pca.fit_transform(scaled_features)
+
+# Create a DataFrame with the principal components
+pca_df = pd.DataFrame(data=principal_components, columns=['PC1', 'PC2'])
+
+# Choose the number of clusters (k)
+k = 3  # You may adjust this based on your analysis
+
+# Fit K-means model to the principal components
+kmeans = KMeans(n_clusters=k, random_state=42)
+pca_df['cluster'] = kmeans.fit_predict(principal_components)
+
+# Visualize the clusters
+plt.scatter(pca_df['PC1'], pca_df['PC2'], c=pca_df['cluster'], cmap='viridis', marker='o', edgecolors='w')
+plt.scatter(kmeans.cluster_centers_[:, 0], kmeans.cluster_centers_[:, 1], c='red', marker='X', s=200, label='Centroids')
+plt.title('K-means Clustering with PCA')
+plt.xlabel('Principal Component 1')
+plt.ylabel('Principal Component 2')
+plt.legend()
+plt.show()
+
